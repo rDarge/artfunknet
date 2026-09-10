@@ -209,11 +209,14 @@ The 36 Legendary effects are organized into 5 primary functional domains:
 
 #### 23. `DONOR_QUEST_ITEM_CHANCE`
 - **Description**: Art Donors have an increased chance to offer quest items.
-- **Default Parameters**: `{}`
+- **Default Parameters**: `{ chance: 0.2 }`
 - **Key Code Paths**:
-  - Endpoint: [`src/app/api/play/npcs/[id]/meet/route.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/app/api/play/npcs/%5Bid%5D/meet/route.ts#L660) (TODO comment placeholder)
+  - Module: [`src/server/donor-quest-item.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/server/donor-quest-item.ts) (`evaluateDonorQuestItemChance`)
+  - Endpoint: [`src/app/api/play/npcs/[id]/meet/route.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/app/api/play/npcs/%5Bid%5D/meet/route.ts#L660)
+  - Unit Tests: [`src/server/donor-quest-item.test.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/server/donor-quest-item.test.ts)
+  - Seed Script: [`scripts/legendary-effects/seed-donor-quest-item-chance.mjs`](file:///c:/Users/Ryan/workspace/artfunknet/scripts/legendary-effects/seed-donor-quest-item-chance.mjs)
   - Legacy Reference: [`server/npc_interactions/donorInteraction.js`](file:///c:/Users/Ryan/workspace/artfunknet/server/npc_interactions/donorInteraction.js)
-- **Status**: **INCOMPLETE (TODO AI)**. Pending implementation during NPC interaction porting.
+- **Status**: **VERIFIED / RESTORED**. Evaluates active quests, picks a target artwork ID on 20% roll chance, and replaces 1 standard donor drop with the quest target item.
 
 #### 24. `DISPLAY_CONDITION_DEALER_BOOST`
 - **Description**: If every displayed painting has condition above 70%, Art Dealers give an additional item.
