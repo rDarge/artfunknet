@@ -8,9 +8,9 @@ This audit report cataloging all 36 Legendary effects serves as the primary trac
 
 ### Key Audit Highlights
 - **Total Legendary Attributes Cataloged**: 36
-- **Recently Fixed**: 1 (`XP_FOR_AUCTIONS` restored in commit `2137f86e`)
-- **Currently Active & Wired**: 27
-- **Identified Gaps / Unhooked Logic**: 8 (including 5 explicit `TODO AI:` placeholders in NPC interactions and 3 omitted handlers in item selling, quest claims, and auction settlements)
+- **Recently Fixed**: 2 (`XP_FOR_AUCTIONS` restored in commit `2137f86e`, `QUEST_ITEM_SELL_BONUS` restored in branch `feature/quest-item-sell-bonus-parity`)
+- **Currently Active & Wired**: 28
+- **Identified Gaps / Unhooked Logic**: 7 (including 5 explicit `TODO AI:` placeholders in NPC interactions and 2 omitted handlers in quest claims and auction settlements)
 
 ---
 
@@ -112,9 +112,13 @@ The 36 Legendary effects are organized into 5 primary functional domains:
 - **Description**: Selling quest items gives double the selling fee.
 - **Default Parameters**: `{ sell_multiplier: 2 }`
 - **Key Code Paths**:
-  - Implementation: Missing in [`src/app/api/play/items/[id]/sell/route.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/app/api/play/items/%5Bid%5D/sell/route.ts)
+  - Implementation: [`src/server/quest-item-sell.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/server/quest-item-sell.ts) (`evaluateQuestItemSellBonus`)
+  - Endpoint (Single Sell): [`src/app/api/play/items/[id]/sell/route.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/app/api/play/items/%5Bid%5D/sell/route.ts#L139)
+  - Endpoint (Bulk Sell): [`src/app/api/play/items/sell-all/route.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/app/api/play/items/sell-all/route.ts#L243)
+  - Unit Tests: [`src/server/quest-item-sell.test.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/server/quest-item-sell.test.ts)
+  - Seed Script: [`scripts/legendary-effects/seed-quest-item-sell-bonus.mjs`](file:///c:/Users/Ryan/workspace/artfunknet/scripts/legendary-effects/seed-quest-item-sell-bonus.mjs)
   - Legacy Reference: [`lib/PlayerItemIF.js`](file:///c:/Users/Ryan/workspace/artfunknet/lib/PlayerItemIF.js), [`lib/client-loot.js`](file:///c:/Users/Ryan/workspace/artfunknet/lib/client-loot.js)
-- **Status**: **UNHOOKED / MISSING**. Sell route does not evaluate `QUEST_ITEM_SELL_BONUS`.
+- **Status**: **VERIFIED / RESTORED**. Evaluates active quests, matches artwork IDs, and applies sell multiplier on single and bulk item sales.
 
 #### 11. `REROLL_DISCOUNT`
 - **Description**: Reroll costs are reduced by 25%.
@@ -329,10 +333,9 @@ Based on code path analysis across modern `src/` files vs legacy implementations
 
 > [!WARNING]
 > ### 1. Missing / Unhooked Effects (High Priority)
-> The following 3 effects are defined in seed metadata but completely missing implementation in modern `src/` handlers:
-> 1. **`QUEST_ITEM_SELL_BONUS`**: Missing in [`src/app/api/play/items/[id]/sell/route.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/app/api/play/items/%5Bid%5D/sell/route.ts).
-> 2. **`KNOWLEDGE_FOR_QUESTS`**: Missing in [`src/app/api/play/quests/[id]/claim/route.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/app/api/play/quests/%5Bid%5D/claim/route.ts).
-> 3. **`KNOWLEDGE_FOR_AUCTION_WINS`**: Missing in [`src/server/auction-gameplay.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/server/auction-gameplay.ts).
+> The following 2 effects are defined in seed metadata but completely missing implementation in modern `src/` handlers:
+> 1. **`KNOWLEDGE_FOR_QUESTS`**: Missing in [`src/app/api/play/quests/[id]/claim/route.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/app/api/play/quests/%5Bid%5D/claim/route.ts).
+> 2. **`KNOWLEDGE_FOR_AUCTION_WINS`**: Missing in [`src/server/auction-gameplay.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/server/auction-gameplay.ts).
 
 > [!NOTE]
 > ### 2. Incomplete NPC Interactions (Medium Priority)
