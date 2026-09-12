@@ -8,9 +8,9 @@ This audit report cataloging all 36 Legendary effects serves as the primary trac
 
 ### Key Audit Highlights
 - **Total Legendary Attributes Cataloged**: 36
-- **Recently Fixed**: 2 (`XP_FOR_AUCTIONS` restored in commit `2137f86e`, `QUEST_ITEM_SELL_BONUS` restored in branch `feature/quest-item-sell-bonus-parity`)
-- **Currently Active & Wired**: 28
-- **Identified Gaps / Unhooked Logic**: 7 (including 5 explicit `TODO AI:` placeholders in NPC interactions and 2 omitted handlers in quest claims and auction settlements)
+- **Recently Fixed**: 4 (`XP_FOR_AUCTIONS` restored in commit `2137f86e`, `QUEST_ITEM_SELL_BONUS` restored in branch `feature/quest-item-sell-bonus-parity`, `DONOR_QUEST_ITEM_CHANCE` restored in branch `feat/restore-donor-quest-item-chance`, `DEALER_QUEST_ITEM_CHANCE` restored in branch `feat/restore-dealer-quest-item-chance`)
+- **Currently Active & Wired**: 31
+- **Identified Gaps / Unhooked Logic**: 5 (including 3 explicit `TODO AI:` placeholders in NPC interactions and 2 omitted handlers in quest claims and auction settlements)
 
 ---
 
@@ -215,9 +215,9 @@ The 36 Legendary effects are organized into 5 primary functional domains:
 - **Description**: Art Donors have an increased chance to offer quest items.
 - **Default Parameters**: `{ chance: 0.2 }`
 - **Key Code Paths**:
-  - Module: [`src/server/donor-quest-item.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/server/donor-quest-item.ts) (`evaluateDonorQuestItemChance`)
+  - Module: [`src/server/npc-quest-item.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/server/npc-quest-item.ts) (`evaluateDonorQuestItemChance`)
   - Endpoint: [`src/app/api/play/npcs/[id]/meet/route.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/app/api/play/npcs/%5Bid%5D/meet/route.ts#L660)
-  - Unit Tests: [`src/server/donor-quest-item.test.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/server/donor-quest-item.test.ts)
+  - Unit Tests: [`src/server/npc-quest-item.test.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/server/npc-quest-item.test.ts)
   - Seed Script: [`scripts/legendary-effects/seed-donor-quest-item-chance.mjs`](file:///c:/Users/Ryan/workspace/artfunknet/scripts/legendary-effects/seed-donor-quest-item-chance.mjs)
   - Legacy Reference: [`server/npc_interactions/donorInteraction.js`](file:///c:/Users/Ryan/workspace/artfunknet/server/npc_interactions/donorInteraction.js)
 - **Status**: **VERIFIED / RESTORED**. Evaluates active quests, picks a target artwork ID on 20% roll chance, and replaces 1 standard donor drop with the quest target item.
@@ -261,9 +261,12 @@ The 36 Legendary effects are organized into 5 primary functional domains:
 - **Description**: Art Dealers have an increased chance to offer quest items.
 - **Default Parameters**: `{}`
 - **Key Code Paths**:
-  - Endpoint: [`src/app/api/play/npcs/[id]/meet/route.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/app/api/play/npcs/%5Bid%5D/meet/route.ts#L964) (TODO comment placeholder)
+  - Module: [`src/server/npc-quest-item.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/server/npc-quest-item.ts) (`evaluateDealerQuestItemChance`)
+  - Endpoint: [`src/app/api/play/npcs/[id]/meet/route.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/app/api/play/npcs/%5Bid%5D/meet/route.ts#L1045)
+  - Unit Tests: [`src/server/npc-quest-item.test.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/server/npc-quest-item.test.ts)
+  - Seed Script: [`scripts/legendary-effects/seed-dealer-quest-item-chance.mjs`](file:///c:/Users/Ryan/workspace/artfunknet/scripts/legendary-effects/seed-dealer-quest-item-chance.mjs)
   - Legacy Reference: [`server/npc_interactions/artDealerInteraction.js`](file:///c:/Users/Ryan/workspace/artfunknet/server/npc_interactions/artDealerInteraction.js)
-- **Status**: **INCOMPLETE (TODO AI)**. Pending implementation during NPC interaction porting.
+- **Status**: **VERIFIED / RESTORED**. Evaluates active quests, picks a target artwork ID on 20% roll chance, and replaces 1 standard dealer drop with the quest target item for sale.
 
 #### 30. `COLLECTOR_QUEST_ITEM`
 - **Description**: Art Collectors occasionally give quest items in addition to money.
@@ -339,12 +342,10 @@ Based on code path analysis across modern `src/` files vs legacy implementations
 
 > [!NOTE]
 > ### 2. Incomplete NPC Interactions (Medium Priority)
-> The following 5 effects have `TODO AI:` comment markers in [`src/app/api/play/npcs/[id]/meet/route.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/app/api/play/npcs/%5Bid%5D/meet/route.ts):
-> 1. **`DONOR_QUEST_ITEM_CHANCE`** (Line 660)
-> 2. **`AUCTION_COUNT_DEALER_BONUS`** (Line 964)
-> 3. **`DEALER_QUEST_ITEM_CHANCE`** (Line 964)
-> 4. **`ART_COLLECTOR_AUCTION_BONUS`** (Line 1130)
-> 5. **`COLLECTOR_QUEST_ITEM`** (Line 1130)
+> The following 3 effects have `TODO AI:` comment markers in [`src/app/api/play/npcs/[id]/meet/route.ts`](file:///c:/Users/Ryan/workspace/artfunknet/src/app/api/play/npcs/%5Bid%5D/meet/route.ts):
+> 1. **`AUCTION_COUNT_DEALER_BONUS`** (Line 964)
+> 2. **`ART_COLLECTOR_AUCTION_BONUS`** (Line 1130)
+> 3. **`COLLECTOR_QUEST_ITEM`** (Line 1130)
 
 ---
 
