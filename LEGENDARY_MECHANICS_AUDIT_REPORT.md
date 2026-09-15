@@ -97,8 +97,9 @@ The 36 Legendary effects are organized into 5 primary functional domains:
   - Implementation: [`src/server/collection-gameplay.ts`](src/server/collection-gameplay.ts#L328) (`grantXp`)
   - Implementation: [`src/server/auction-gameplay.ts`](src/server/auction-gameplay.ts#L225) (`grantAuctionXpReward`)
   - Service: [`src/server/standard-npc-reward-service.ts`](src/server/standard-npc-reward-service.ts#L160)
+  - Endpoint: [`src/app/api/play/quests/[id]/claim/route.ts`](src/app/api/play/quests/[id]/claim/route.ts#L130) (`claimArtHistorianQuest`)
   - Endpoint: [`src/app/api/play/npcs/[id]/meet/route.ts`](src/app/api/play/npcs/[id]/meet/route.ts#L1452)
-- **Status**: **Wired**. Evaluated across multiple XP grant routines.
+- **Status**: **VERIFIED / RESTORED**. Evaluated across XP grant routines including gallery collection, auction XP rewards, NPC interactions, and quest claims.
 
 #### 9. `UNCLAIMED_ITEM_SELL_BONUS`
 - **Description**: Gain bonus money for selling unclaimed art.
